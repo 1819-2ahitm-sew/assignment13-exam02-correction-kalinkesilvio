@@ -2,7 +2,9 @@ package at.htl.bank.business;
 
 import at.htl.bank.model.BankKonto;
 import at.htl.bank.model.GiroKonto;
+import at.htl.bank.model.Girokonto;
 import at.htl.bank.model.SparKonto;
+import at.htl.bank.model.Sparkonto;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Main {
   static final String BUCHUNGSDATEI = "buchungen.csv";
   static final String ERGEBNISDATEI = "ergebnis.csv";
 
+  static List<BankKonto> list = new ArrayList<>();
   
   /**
    * Führen Sie die drei Methoden erstelleKonten, fuehreBuchungenDurch und
@@ -31,6 +34,10 @@ public class Main {
    * @param args
    */
   public static void main(String[] args) {
+
+    erstelleKonten(KONTENDATEI);
+    fuehreBuchungenDurch();
+    schreibeKontostandInDatei();
 
   }
 
@@ -46,7 +53,35 @@ public class Main {
    */
   private static void erstelleKonten(String datei) {
 
-        System.out.println("erstelleKonten noch nicht implementiert");
+    int counter = 0;
+    String[] line;
+    String name;
+    double kontoStand;
+    String kontoTyp;
+
+    try(Scanner scanner = new Scanner(new FileReader(KONTENDATEI))) {
+      while (scanner.hasNextLine()) {
+        line = scanner.nextLine().split(";");
+        name = line[1];
+        kontoStand = Double.parseDouble(line[2]);
+        kontoTyp = line[0];
+        //list.add(counter, scanner.nextLine());
+        //System.out.println(scanner.nextLine());
+        //counter++;
+
+        if (kontoTyp.equalsIgnoreCase("Sparkonto")) {
+          Sparkonto sparkonto = new Sparkonto(kontoStand, name, ZINSSATZ);
+          list.add(sparkonto);
+        } else if (kontoTyp.equalsIgnoreCase("Girokonto")) {
+          Girokonto girokonto = new Girokonto(kontoStand, name, GEBUEHR);
+        }
+      }
+    } catch (FileNotFoundException e) {
+      System.err.println(e.getMessage());
+    }
+
+
+    System.out.println("erstelleKonten noch nicht implementiert");
   }
 
   /**
@@ -64,6 +99,28 @@ public class Main {
    * @param datei BUCHUNGSDATEI
    */
   private static void fuehreBuchungenDurch(String datei) {
+
+    int counter = 0;
+    String[] line;
+    BankKonto vonKonto
+    double betrag;
+    BankKonto zuKonto;
+
+    try(Scanner scanner = new Scanner(new FileReader(datei))) {
+
+      scanner.nextLine();
+      while (scanner.hasNextLine()) {
+        line = scanner.nextLine().split(";");
+        vonKonto = findeKontoPerName(line[0]);
+        zuKonto = findeKontoPerName(line[1]);
+        betrag = Integer.parseInt(line[2]);
+        
+      }
+
+    } catch (FileNotFoundException e) {
+      System.err.println(e.getMessage());
+    }
+
         System.out.println("fuehreBuchungenDurch noch nicht implementiert");
   }
 
@@ -100,6 +157,13 @@ public class Main {
    *         nicht gefunden wird
    */
   public static BankKonto findeKontoPerName(String name) {
+
+    for (int i = 0; i < list.size(); i++) {
+      if (name.equals(list.get(i).getName())) {
+        return list.get(i);
+      }
+    }
+
        return null;
   }
 
