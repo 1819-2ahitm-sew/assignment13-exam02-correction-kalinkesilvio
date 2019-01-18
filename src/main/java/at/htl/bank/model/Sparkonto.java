@@ -14,7 +14,7 @@ public class Sparkonto extends BankKonto {
     }
 
     public void zinsenAnrechnen() {
-
+        kontoStand = kontoStand + kontoStand * (zinsSatz / 100);
     }
 
 

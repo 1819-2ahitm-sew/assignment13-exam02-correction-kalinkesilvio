@@ -2,6 +2,9 @@ package at.htl.bank.model;
 
 abstract public class BankKonto {
 
+    private String name;
+    protected double kontoStand;
+
     public String getName() {
         return name;
     }
@@ -13,9 +16,6 @@ abstract public class BankKonto {
     public double getKontoStand() {
         return kontoStand;
     }
-
-    private String name;
-    protected double kontoStand;
 
 
     public BankKonto(String name, double kontoStand) {
@@ -29,10 +29,10 @@ abstract public class BankKonto {
     }
 
     public void einzahlen(double betrag) {
-
+        this.kontoStand += betrag;
     }
 
     public void abheben(double betrag) {
-
+        this.kontoStand -= betrag;
     }
 }

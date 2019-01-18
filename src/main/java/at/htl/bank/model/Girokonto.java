@@ -14,11 +14,14 @@ public class Girokonto extends BankKonto {
         this.gebuehr = gebuehr;
     }
 
-    public void abheben() {
-
+    @Override
+    public void abheben(double betrag) {
+        super.abheben(betrag + gebuehr);
     }
 
-    public void einzahlen() {
-
+    @Override
+    public void einzahlen(double betrag) {
+        super.einzahlen(betrag - gebuehr);
     }
+
 }
